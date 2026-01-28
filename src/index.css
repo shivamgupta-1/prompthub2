@@ -1,0 +1,162 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+
+@layer components {
+	.btn {
+		@apply inline-flex items-center justify-center font-medium rounded transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2;
+	}
+	/* Contained */
+	.btn-contained-primary {
+		@apply text-white;
+		background-color: var(--color-primary);
+	}
+	.btn-contained-primary:hover {
+		background-color: var(--color-primary-dark);
+	}
+	.btn-contained-secondary {
+		@apply text-white;
+		background-color: var(--color-secondary);
+	}
+	.btn-contained-secondary:hover {
+		background-color: var(--color-secondary-dark);
+	}
+	.btn-contained-success {
+		@apply text-white;
+		background-color: var(--color-success);
+	}
+	.btn-contained-success:hover {
+		background-color: var(--color-success-dark);
+	}
+	.btn-contained-error {
+		@apply text-white;
+		background-color: var(--color-error);
+	}
+	.btn-contained-error:hover {
+		background-color: var(--color-error-dark);
+	}
+	.btn-contained-info {
+		@apply text-white;
+		background-color: var(--color-info);
+	}
+	.btn-contained-info:hover {
+		background-color: var(--color-info-dark);
+	}
+	.btn-contained-warning {
+		@apply text-white;
+		background-color: var(--color-warning);
+	}
+	.btn-contained-warning:hover {
+		background-color: var(--color-warning-dark);
+	}
+
+	/* Outlined */
+	.btn-outlined-primary {
+		@apply bg-transparent;
+		color: var(--color-primary);
+		border: 1px solid var(--color-primary);
+	}
+	.btn-outlined-primary:hover {
+		background-color: var(--color-primary-light);
+	}
+	.btn-outlined-secondary {
+		@apply bg-transparent;
+		color: var(--color-secondary);
+		border: 1px solid var(--color-secondary);
+	}
+	.btn-outlined-secondary:hover {
+		background-color: var(--color-secondary-light);
+	}
+	.btn-outlined-success {
+		@apply bg-transparent;
+		color: var(--color-success);
+		border: 1px solid var(--color-success);
+	}
+	.btn-outlined-success:hover {
+		background-color: var(--color-success-light);
+	}
+	.btn-outlined-error {
+		@apply bg-transparent;
+		color: var(--color-error);
+		border: 1px solid var(--color-error);
+	}
+	.btn-outlined-error:hover {
+		background-color: var(--color-error-light);
+	}
+	.btn-outlined-info {
+		@apply bg-transparent;
+		color: var(--color-info);
+		border: 1px solid var(--color-info);
+	}
+	.btn-outlined-info:hover {
+		background-color: var(--color-info-light);
+	}
+	.btn-outlined-warning {
+		@apply bg-transparent;
+		color: var(--color-warning);
+		border: 1px solid var(--color-warning);
+	}
+	.btn-outlined-warning:hover {
+		background-color: var(--color-warning-light);
+	}
+
+	/* Text */
+	.btn-text-primary {
+		@apply bg-transparent;
+		color: var(--color-primary);
+	}
+	.btn-text-primary:hover {
+		background-color: var(--color-primary-light);
+	}
+	.btn-text-secondary {
+		@apply bg-transparent;
+		color: var(--color-secondary);
+	}
+	.btn-text-secondary:hover {
+		background-color: var(--color-secondary-light);
+	}
+	.btn-text-success {
+		@apply bg-transparent;
+		color: var(--color-success);
+	}
+	.btn-text-success:hover {
+		background-color: var(--color-success-light);
+	}
+	.btn-text-error {
+		@apply bg-transparent;
+		color: var(--color-error);
+	}
+	.btn-text-error:hover {
+		background-color: var(--color-error-light);
+	}
+	.btn-text-info {
+		@apply bg-transparent;
+		color: var(--color-info);
+	}
+	.btn-text-info:hover {
+		background-color: var(--color-info-light);
+	}
+	.btn-text-warning {
+		@apply bg-transparent;
+		color: var(--color-warning);
+	}
+	.btn-text-warning:hover {
+		background-color: var(--color-warning-light);
+	}
+
+	/* Sizes using tokens */
+	.btn-size-small {
+		padding: var(--btn-padding-small);
+		font-size: var(--btn-font-size-small);
+		min-height: var(--btn-min-height-small);
+	}
+	.btn-size-medium {
+		padding: var(--btn-padding-medium);
+		font-size: var(--btn-font-size-medium);
+		min-height: var(--btn-min-height-medium);
+	}
+	.btn-size-large {
+		padding: var(--btn-padding-large);
+		font-size: var(--btn-font-size-large);
+		min-height: var(--btn-min-height-large);
+	}
+}
