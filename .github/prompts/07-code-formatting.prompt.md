@@ -1,0 +1,6 @@
+1. "Apply Prettier formatting to all files in this repo using project-level config."
+2. "Fix inconsistent indentations, spacing, and semicolons using Prettier rules."
+3. "Add a .prettierrc that enforces trailing commas, 100 character line limit, and single quotes."
+4. "Show how to configure Prettier to work with Tailwind CSS class sorting."
+5. "Integrate Prettier with ESLint and format code on save in VS Code."
+6. "Format this file based on Prettier config without changing any logic."

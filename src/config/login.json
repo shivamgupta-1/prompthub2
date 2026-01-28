@@ -1,0 +1,50 @@
+{
+  "email": {
+    "id": "email",
+    "type": "email",
+    "name": "email",
+    "placeholder": "Enter your email",
+    "label": "Email Address",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "Email Address is required."
+      },
+      "pattern": {
+        "value": "EMAIL",
+        "errorMessage": "Please enter a valid email address."
+      }
+    },
+    "aria-label": "Email Address",
+    "aria-describedby": "emailHelp",
+    "tooltip": "We'll never share your email with anyone else."
+  },
+  "password": {
+    "id": "password",
+    "type": "password",
+    "name": "password",
+    "placeholder": "Enter your password",
+    "label": "Password",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "Password is required."
+      },
+      "minLength": {
+        "value": 6,
+        "errorMessage": "Password must be at least 6 characters long."
+      }
+    },
+    "aria-label": "Password",
+    "aria-describedby": "passwordHelp",
+    "tooltip": "Choose a strong password to keep your account secure."
+  }
+}
