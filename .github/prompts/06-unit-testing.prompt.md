@@ -1,7 +1,7 @@
 # Test Case Writing Prompt for React Components
 
 ## Purpose
-Write unit and integration tests for React components using **React Testing Library (RTL)** and **Jest**, including mocking APIs and simulating user interactions.
+Write unit and integration tests for React components using **React Testing Library (RTL)** and **Vitest**, including mocking APIs and simulating user interactions.
 
 ---
 
