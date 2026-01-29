@@ -10,7 +10,7 @@ import Button from '../components/Button/Button';
 
 type FormDataType = typeof loginConfig;
 
-const Home = () => {
+const Login = () => {
   // Deep clone the login config to avoid mutating the original JSON
   const clonedLoginConfig = deepClone(loginConfig);
 
@@ -88,4 +88,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Login;
