@@ -3,3 +3,7 @@ dist/
 .env
 coverage/
 .nyc_output/
+*storybook.log
+storybook-static
+.env.*
+!.env.example

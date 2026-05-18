@@ -25,7 +25,7 @@ export interface CheckboxProps {
   /** Additional CSS classes for style extension */
   className?: string;
   /** HTML value attribute */
-  value?: string | number;
+  value?: boolean;
   /** Default checked state (uncontrolled) */
   defaultChecked?: boolean;
   /** Checked state (controlled) */
@@ -33,9 +33,13 @@ export interface CheckboxProps {
   /** Label text displayed next to checkbox */
   label?: string;
   /** Mark checkbox as required */
-  required?: boolean;
+  isRequired?: boolean;
   /** Disable user interaction */
   disabled?: boolean;
+  /** Shows error state styling */
+  hasError?: boolean;
+  /** Error message to display below the checkbox */
+  errorMessage?: string;
   /** Checkbox size - affects visual dimensions */
   size?: 'sm' | 'md' | 'lg';
   /** Visual variant - outline or filled */
@@ -71,8 +75,10 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       defaultChecked,
       checked,
       label,
-      required = false,
+      isRequired = false,
       disabled = false,
+      hasError = false,
+      errorMessage = '',
       size = 'md',
       variant = 'outline',
       tabIndex,
@@ -89,7 +95,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       'aria-invalid': ariaInvalid,
       'aria-required': ariaRequired,
     },
-    ref
+    ref,
   ) => {
     const [uncontrolledChecked, setUncontrolledChecked] = useState(defaultChecked || false);
 
@@ -141,9 +147,18 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     // Checkbox container styles
     const containerStyles: React.CSSProperties = {
       display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      gap: 'var(--space-2)',
+      opacity: disabled ? 'var(--opacity-disabled)' : 1,
+      cursor: disabled ? 'var(--cursor-disabled)' : 'pointer',
+    };
+
+    // Checkbox with label wrapper
+    const checkboxWrapperStyles: React.CSSProperties = {
+      display: 'flex',
       alignItems: 'center',
       gap: 'var(--space-3)',
-      opacity: disabled ? 'var(--opacity-disabled)' : 1,
       cursor: disabled ? 'var(--cursor-disabled)' : 'pointer',
     };
 
@@ -158,7 +173,9 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       cursor: disabled ? 'var(--cursor-disabled)' : 'pointer',
       transition: `all var(--transition-normal)`,
       backgroundColor: isChecked ? 'var(--color-primary)' : currentVariant.backgroundColor,
-      border: isChecked ? `var(--border-width-sm) solid var(--color-primary)` : currentVariant.border,
+      border: isChecked
+        ? `var(--border-width-sm) solid var(--color-primary)`
+        : currentVariant.border,
       flexShrink: 0,
     };
 
@@ -188,88 +205,91 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
 
     return (
       <div style={containerStyles} className={className}>
-        {/* Hidden native checkbox for accessibility */}
-        <input
-          ref={ref}
-          id={checkboxId}
-          type="checkbox"
-          name={name}
-          value={value}
-          // defaultChecked={defaultChecked}
-          checked={isChecked}
-          disabled={disabled}
-          required={required}
-          tabIndex={tabIndex}
-          onChange={handleChange}
-          onClick={onClick}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          className="sr-only"
-          aria-label={ariaLabel || label}
-          aria-labelledby={ariaLabelledby}
-          aria-describedby={ariaDescribedby}
-          aria-hidden={ariaHidden}
-          aria-disabled={ariaDisabled ?? disabled}
-          aria-live={ariaLive}
-          aria-invalid={ariaInvalid}
-          aria-required={ariaRequired ?? required}
-        />
+        <div style={checkboxWrapperStyles}>
+          {/* Hidden native checkbox for accessibility */}
+          <input
+            ref={ref}
+            id={checkboxId}
+            type='checkbox'
+            name={name}
+            value={value}
+            // defaultChecked={defaultChecked}
+            checked={isChecked}
+            disabled={disabled}
+            required={isRequired}
+            tabIndex={tabIndex}
+            onChange={handleChange}
+            onClick={onClick}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            className='sr-only'
+            aria-label={ariaLabel || label}
+            aria-labelledby={ariaLabelledby}
+            aria-describedby={ariaDescribedby}
+            aria-hidden={ariaHidden}
+            aria-disabled={ariaDisabled ?? disabled}
+            aria-live={ariaLive}
+            aria-invalid={ariaInvalid ?? hasError}
+            aria-required={ariaRequired ?? isRequired}
+          />
 
-        {/* Custom checkbox display */}
-        <label
-          htmlFor={checkboxId}
-          style={checkboxDisplayStyles}
-          onMouseEnter={(e) => {
-            if (!disabled) {
-              (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-sm)';
-              if (!isChecked) {
-                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color-hover)';
+          {/* Custom checkbox display */}
+          <label
+            htmlFor={checkboxId}
+            style={checkboxDisplayStyles}
+            onMouseEnter={e => {
+              if (!disabled) {
+                (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-sm)';
+                if (!isChecked) {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color-hover)';
+                }
               }
-            }
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-            if (!isChecked) {
-              (e.currentTarget as HTMLElement).style.borderColor = `var(--border-color)`;
-            }
-          }}
-          onFocus={(e) => {
-            if (!disabled) {
-              (e.currentTarget as HTMLElement).style.boxShadow = 'var(--focus-ring)';
-            }
-          }}
-          onBlur={(e) => {
-            (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-          }}
-        >
-          {isChecked && (
-            <svg
-              style={svgStyles}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={3}
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          )}
-        </label>
-
-        {/* Label text */}
-        {label && (
-          <label htmlFor={checkboxId} style={labelStyles}>
-            {label}
-            {required && <span style={requiredIndicatorStyles}>*</span>}
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+              if (!isChecked) {
+                (e.currentTarget as HTMLElement).style.borderColor = `var(--border-color)`;
+              }
+            }}
+            onFocus={e => {
+              if (!disabled) {
+                (e.currentTarget as HTMLElement).style.boxShadow = 'var(--focus-ring)';
+              }
+            }}
+            onBlur={e => {
+              (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+            }}
+          >
+            {isChecked && (
+              <svg
+                style={svgStyles}
+                fill='none'
+                stroke='var(--color-white)'
+                strokeWidth={3}
+                viewBox='0 0 24 24'
+                aria-hidden='true'
+              >
+                <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
+              </svg>
+            )}
           </label>
+
+          {/* Label text */}
+          {label && (
+            <label htmlFor={checkboxId} style={labelStyles}>
+              {label}
+              {isRequired && <span style={requiredIndicatorStyles}>*</span>}
+            </label>
+          )}
+        </div>
+        {hasError && errorMessage && (
+          <span style={{ display: 'block', marginTop: 'var(--space-1)', fontSize: 'var(--font-size-sm)', color: 'var(--color-error)' }} role="alert">
+            {errorMessage}
+          </span>
         )}
       </div>
     );
-  }
+  },
 );
 
 Checkbox.displayName = 'Checkbox';

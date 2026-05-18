@@ -27,11 +27,17 @@ export interface RadioGroupProps {
   /** Unique identifier for the component */
   id?: string;
 
+  /** Name attribute for form submission */
+  name?: string;
+
   /** Additional CSS classes for custom styling */
   className?: string;
 
   /** Label text displayed above or beside the radio group */
   label?: React.ReactNode;
+
+  /** Current selected value */
+  value?: string;
 
   /** Indicates if this radio group is required */
   required?: boolean;
@@ -40,13 +46,22 @@ export interface RadioGroupProps {
   disabled?: boolean;
 
   /** Shows error state styling */
-  error?: boolean;
+  hasError?: boolean;
+
+  /** Error message to display below the radio group */
+  errorMessage?: string;
 
   /** Size of the radio group - 'sm' (small), 'md' (medium), 'lg' (large) */
   size?: 'sm' | 'md' | 'lg';
 
+  /** Array of options for radio buttons */
+  options?: Array<{ value: string; label: string }>;
+
   /** Ref to the container div element */
   inputRef?: React.Ref<HTMLDivElement>;
+
+  /** Called when a radio button is selected */
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   /** Called when focus enters the radio group */
   onFocus?: (e: React.FocusEvent<HTMLDivElement>) => void;
@@ -87,13 +102,18 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   (
     {
       id,
+      name,
       className,
       label,
+      value = '',
       required = false,
       disabled = false,
-      error = false,
+      hasError = false,
+      errorMessage = '',
       size = 'md',
+      options,
       inputRef,
+      onChange,
       onFocus,
       onBlur,
       'aria-label': ariaLabel,
@@ -119,7 +139,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     const containerStyle: React.CSSProperties = {
       display: 'flex',
       flexDirection: 'column',
-      gap: `${sizeConfig_value.gap}px`,
+      gap: 0,
       opacity: disabled ? 'var(--opacity-disabled)' : 1,
       cursor: disabled ? 'var(--cursor-disabled)' : 'pointer',
     };
@@ -129,9 +149,9 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       gap: `${sizeConfig_value.gap}px`,
       alignItems: 'center',
       fontSize: sizeConfig_value.fontSize,
-      outline: error ? `var(--border-width-sm) solid var(--color-error)` : 'none',
+      outline: hasError ? `var(--border-width-sm) solid var(--color-error)` : 'none',
       borderRadius: 'var(--radius-md)',
-      padding: error ? 'var(--space-2)' : 0,
+      padding: 'var(--space-2)',
       pointerEvents: disabled ? 'none' : 'auto',
     };
 
@@ -142,7 +162,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       fontSize: sizeConfig_value.fontSize,
       color: 'var(--text-primary)',
       fontWeight: 'var(--font-weight-medium)',
-      marginBottom: label ? `${sizeConfig_value.gap}px` : 0,
+      marginBottom: '0.3rem',
     };
 
     const requiredIndicatorStyle: React.CSSProperties = {
@@ -172,8 +192,30 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
           onFocus={onFocus}
           onBlur={onBlur}
         >
-          {children}
+          {options ? (
+            options.map((opt) => (
+              <label key={opt.value} className='flex items-center gap-2 cursor-pointer'>
+                <input
+                  type='radio'
+                  name={name || id}
+                  value={opt.value}
+                  checked={value === opt.value}
+                  onChange={onChange}
+                  disabled={disabled}
+                  id={`${id}-${opt.value}`}
+                />
+                <span className='text-sm'>{opt.label}</span>
+              </label>
+            ))
+          ) : (
+            children
+          )}
         </div>
+        {hasError && errorMessage && (
+          <span style={{ display: 'block', marginTop: 'var(--space-1)', fontSize: 'var(--font-size-sm)', color: 'var(--color-error)' }} role="alert">
+            {errorMessage}
+          </span>
+        )}
       </div>
     );
   }

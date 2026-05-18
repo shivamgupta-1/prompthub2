@@ -49,7 +49,7 @@
  *   - Multiple size variants for flexible layout integration
  */
 
-import React, { forwardRef, useImperativeHandle, useRef, useState, useMemo } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useMemo } from 'react';
 
 /**
  * Configuration for size variants - maps size prop to height and padding values
@@ -81,7 +81,8 @@ const SIZE_VARIANTS = {
 const VARIANT_STYLES = {
   outlined: {
     base: 'border border-[var(--border-color)] rounded-[var(--radius-md)] bg-[var(--bg-surface)]',
-    focus: 'focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-opacity-35',
+    focus:
+      'focus:border-[var(--border-color-focus)] focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-opacity-35',
   },
   filled: {
     base: 'border-none rounded-[var(--radius-md)] bg-[var(--bg-muted)]',
@@ -97,7 +98,8 @@ const VARIANT_STYLES = {
  * SVG dropdown arrow icon (base64 encoded for better performance)
  * Prevents hardcoding the arrow image URL
  */
-const DROPDOWN_ARROW_SVG = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234b5563' d='M6 9L1 4h10z'/%3E%3C/svg%3E\")";
+const DROPDOWN_ARROW_SVG =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234b5563' d='M6 9L1 4h10z'/%3E%3C/svg%3E\")";
 
 /**
  * Configuration constants for visual adjustments
@@ -105,7 +107,6 @@ const DROPDOWN_ARROW_SVG = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3
 const ARROW_ICON_SIZE = '12px';
 const ARROW_POSITION_RIGHT = 'var(--space-3)';
 const ARROW_PADDING_OFFSET = 'calc(var(--space-4) + 24px)';
-const FOCUS_RING_WIDTH = '3px';
 
 export interface SelectOption {
   /** Display text for the option */
@@ -119,6 +120,13 @@ export interface SelectOption {
 export interface SelectProps {
   /** Unique identifier for the select element */
   id?: string;
+
+  /** Indicates if selection is required (from JSON config) */
+  isRequired?: boolean;
+
+  hasError?: boolean;
+
+  validationRules?: Record<string, any>;
 
   /** Name attribute for form submission */
   name?: string;
@@ -148,10 +156,13 @@ export interface SelectProps {
   title?: string;
 
   /** Shows error state styling */
-  error?: boolean;
+  error?: string;
 
   /** Error message to display below the select */
   errorMessage?: string;
+
+  /** Array of options to render */
+  options?: SelectOption[];
 
   /** Size variant: 'sm' (small), 'md' (medium), 'lg' (large) */
   size?: 'sm' | 'md' | 'lg';
@@ -203,11 +214,11 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       value,
       defaultValue,
       label,
-      required = false,
+      isRequired,
       disabled = false,
       htmlFor,
       title,
-      error = false,
+      error,
       errorMessage,
       size = 'md',
       variant = 'outlined',
@@ -219,13 +230,17 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
+      options,
+
+      hasError,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      validationRules,
       children,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const innerRef = useRef<HTMLSelectElement | null>(null);
-    const [isFocused, setIsFocused] = useState(false);
 
     // Forward ref to the underlying select element
     useImperativeHandle(ref, () => innerRef.current as HTMLSelectElement);
@@ -233,10 +248,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     // Support legacy inputRef prop for backward compatibility
     React.useEffect(() => {
       if (!inputRef) return;
+      const currentRef = innerRef.current;
       if (typeof inputRef === 'function') {
-        inputRef(innerRef.current);
-      } else {
-        inputRef.current = innerRef.current;
+        inputRef(currentRef);
       }
     }, [inputRef]);
 
@@ -257,18 +271,22 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     }, [variant]);
 
     /**
+     * Merge error sources - use error prop or hasError from JSON config
+     */
+    const isFieldError = error || hasError || false;
+
+    /**
      * Build error/focus styling classes
      */
     const errorClasses = useMemo(() => {
-      if (!error) return '';
+      if (!isFieldError) return '';
       return 'border-[var(--color-error)] focus:border-[var(--color-error)] focus:ring-[var(--color-error)] focus:ring-opacity-35';
-    }, [error]);
+    }, [isFieldError]);
 
     /**
      * Handle select focus event
      */
     const handleFocus = (e: React.FocusEvent<HTMLSelectElement>) => {
-      setIsFocused(true);
       onFocus?.(e);
     };
 
@@ -276,7 +294,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
      * Handle select blur event
      */
     const handleBlur = (e: React.FocusEvent<HTMLSelectElement>) => {
-      setIsFocused(false);
       onBlur?.(e);
     };
 
@@ -298,7 +315,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
      */
     if (value !== undefined && defaultValue !== undefined) {
       console.warn(
-        'Select: Both "value" and "defaultValue" props provided. Using controlled mode (value). "defaultValue" will be ignored.'
+        'Select: Both "value" and "defaultValue" props provided. Using controlled mode (value). "defaultValue" will be ignored.',
       );
     }
 
@@ -306,19 +323,16 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const describedById = [ariaDescribedby, errorId].filter(Boolean).join(' ');
 
     return (
-      <div className={`flex flex-col gap-[var(--space-2)] w-full ${className}`}>
+      <div className={`flex flex-col gap-2 w-full ${className}`}>
         {/* Label with required indicator */}
         {label && (
           <label
             htmlFor={id ?? htmlFor}
-            className="flex items-center gap-[var(--space-1)] text-[var(--font-size-sm)] font-[var(--font-weight-medium)] text-[var(--text-primary)]"
+            className='flex items-center gap-1 text-sm font-medium text-gray-700'
           >
             <span>{label}</span>
-            {required && (
-              <span
-                className="text-[var(--color-error)] font-[var(--font-weight-semibold)]"
-                aria-label="required"
-              >
+            {isRequired && (
+              <span className='text-red-500 font-semibold' aria-label='required'>
                 *
               </span>
             )}
@@ -331,14 +345,14 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           id={id}
           name={name}
           {...selectValueProps}
-          required={required}
+          required={isRequired}
           disabled={disabled}
           title={title}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={describedById || undefined}
-          aria-invalid={error}
-          aria-required={required}
+          aria-invalid={isFieldError ? 'true' : 'false'}
+          aria-required={isRequired}
           autoFocus={autoFocus}
           onChange={onChange}
           onFocus={handleFocus}
@@ -361,22 +375,24 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           }}
           {...rest}
         >
-          {children}
+          {options && Array.isArray(options) && options.length > 0
+            ? options.map((opt: SelectOption) => (
+                <option key={`${opt.value}`} value={opt.value} disabled={opt.disabled}>
+                  {opt.label}
+                </option>
+              ))
+            : children}
         </select>
 
         {/* Error message display */}
-        {error && errorMessage && (
-          <div
-            id={errorId}
-            className="text-[var(--color-error)] text-[var(--font-size-sm)] font-[var(--font-weight-medium)] mt-[var(--space-1)]"
-            role="alert"
-          >
+        {hasError && (
+          <span id={errorId} className='text-sm text-red-600' role='alert'>
             {errorMessage}
-          </div>
+          </span>
         )}
       </div>
     );
-  }
+  },
 );
 
 Select.displayName = 'Select';

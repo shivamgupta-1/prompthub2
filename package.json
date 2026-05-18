@@ -11,17 +11,26 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@azure/msal-browser": "^5.8.0",
+    "@azure/msal-react": "^5.3.1",
+    "@faker-js/faker": "^10.4.0",
+    "@reduxjs/toolkit": "^2.11.2",
     "@storybook/react": "^10.1.11",
     "axios": "^1.13.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.12.0"
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.12.0",
+    "redux-saga": "^1.4.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@storybook/react-vite": "^10.2.19",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -36,9 +45,12 @@
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "eslint-plugin-storybook": "^10.2.19",
     "globals": "^16.5.0",
     "jsdom": "^27.4.0",
     "postcss": "^8.5.6",
+    "storybook": "^10.2.19",
+    "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",

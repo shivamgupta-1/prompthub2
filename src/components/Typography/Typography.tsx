@@ -23,6 +23,7 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
   children?: React.ReactNode; 
   variant?: Variant;
+  color?: string;
 
 
   ariaLabel?: string;
@@ -57,13 +58,13 @@ const variantClassMap: Record<Variant, React.CSSProperties> = {
   h4: { fontSize: 'var(--font-size-lg)', lineHeight: 'var(--line-height-normal)', fontWeight: 'var(--font-weight-semibold)' },
   h5: { fontSize: 'var(--font-size-md)', lineHeight: 'var(--line-height-normal)', fontWeight: 'var(--font-weight-semibold)' },
   h6: { fontSize: 'var(--font-size-sm)', lineHeight: 'var(--line-height-normal)', fontWeight: 'var(--font-weight-medium)' },
-  subtitle1: { fontSize: 'var(--font-size-md)', lineHeight: 'var(--line-height-normal)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-primary)' },
-  subtitle2: { fontSize: 'var(--font-size-sm)', lineHeight: 'var(--line-height-normal)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-primary)' },
-  body1: { fontSize: 'var(--font-size-md)', lineHeight: 'var(--line-height-relaxed)', color: 'var(--text-primary)' },
-  body2: { fontSize: 'var(--font-size-sm)', lineHeight: 'var(--line-height-relaxed)', color: 'var(--text-primary)' },
-  caption: { fontSize: 'var(--font-size-xs)', lineHeight: 'var(--line-height-normal)', color: 'var(--text-secondary)' },
-  overline: { fontSize: 'var(--font-size-xs)', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)' },
-  button: { fontSize: 'var(--font-size-sm)', textTransform: 'uppercase', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-primary)' },
+  subtitle1: { fontSize: 'var(--font-size-md)', lineHeight: 'var(--line-height-normal)', fontWeight: 'var(--font-weight-medium)' },
+  subtitle2: { fontSize: 'var(--font-size-sm)', lineHeight: 'var(--line-height-normal)', fontWeight: 'var(--font-weight-medium)' },
+  body1: { fontSize: 'var(--font-size-md)', lineHeight: 'var(--line-height-relaxed)' },
+  body2: { fontSize: 'var(--font-size-sm)', lineHeight: 'var(--line-height-normal)' },
+  caption: { fontSize: 'var(--font-size-xs)', lineHeight: 'var(--line-height-normal)' },
+  overline: { fontSize: 'var(--font-size-xs)', textTransform: 'uppercase', letterSpacing: '0.05em' },
+  button: { fontSize: 'var(--font-size-sm)', textTransform: 'uppercase', fontWeight: 'var(--font-weight-medium)' },
   inherit: {},
 };
 
@@ -72,6 +73,7 @@ const Typography: React.FC<TypographyProps> = ({
   className = '',
   children,
   variant = 'body1',
+  color,
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
@@ -86,10 +88,12 @@ const Typography: React.FC<TypographyProps> = ({
     display: 'block',
     ...variantStyle,
   };
+  // merge provided color prop (e.g., "text-gray-700") into className so Tailwind utilities apply
+  const mergedClassName = `${className} ${color ?? ''}`.trim();
 
   const props: React.HTMLAttributes<HTMLElement> = {
     id,
-    className,
+    className: mergedClassName,
     style: baseStyle,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,

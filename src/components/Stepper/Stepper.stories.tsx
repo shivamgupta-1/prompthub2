@@ -13,7 +13,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { StepperStep } from './Stepper';
-import { Stepper } from './Stepper';
+import Stepper from './Stepper';
 
 const meta = {
   title: 'Components/Stepper',
@@ -74,22 +74,35 @@ export const HorizontalLinear: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Horizontal Linear Stepper</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Use arrow keys or click steps to navigate. Linear type requires sequential progress.
           </p>
         </div>
         <Stepper
-          id="horizontal-linear"
+          id='horizontal-linear'
           steps={steps}
           value={active}
-          type="linear"
-          orientation="horizontal"
+          type='linear'
+          orientation='horizontal'
           onClick={setActive}
-          aria-label="Account setup wizard"
-          aria-live="polite"
+          aria-label='Account setup wizard'
+          aria-live='polite'
         />
       </div>
     );
@@ -111,21 +124,34 @@ export const HorizontalNonLinear: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Horizontal Non-Linear Stepper</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Non-linear type allows jumping to any step without restrictions.
           </p>
         </div>
         <Stepper
-          id="horizontal-nonlinear"
+          id='horizontal-nonlinear'
           steps={steps}
           value={active}
-          type="non-linear"
-          orientation="horizontal"
+          type='non-linear'
+          orientation='horizontal'
           onClick={setActive}
-          aria-label="Free navigation stepper"
+          aria-label='Free navigation stepper'
         />
       </div>
     );
@@ -146,21 +172,34 @@ export const VerticalStepper: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Vertical Stepper</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Vertical layout is useful for step-by-step wizards.
           </p>
         </div>
         <Stepper
-          id="vertical-stepper"
+          id='vertical-stepper'
           steps={steps}
           value={active}
-          type="linear"
-          orientation="vertical"
+          type='linear'
+          orientation='vertical'
           onClick={setActive}
-          aria-label="Vertical wizard"
+          aria-label='Vertical wizard'
         />
       </div>
     );
@@ -181,22 +220,37 @@ export const AlternativeLabels: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
-          <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Stepper with Alternative Labels</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>
+            Stepper with Alternative Labels
+          </h3>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Labels appear below step indicators instead of to the side.
           </p>
         </div>
         <Stepper
-          id="alternative-labels"
+          id='alternative-labels'
           steps={steps}
           value={active}
-          type="linear"
-          orientation="horizontal"
+          type='linear'
+          orientation='horizontal'
           alternativeLabel
           onClick={setActive}
-          aria-label="Stepper with alternative label placement"
+          aria-label='Stepper with alternative label placement'
         />
       </div>
     );
@@ -217,22 +271,35 @@ export const CompletedSteps: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Stepper with Completed Steps</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Completed steps display checkmarks instead of numbers.
           </p>
         </div>
         <Stepper
-          id="completed-steps"
+          id='completed-steps'
           steps={steps}
           value={active}
-          type="linear"
-          orientation="horizontal"
+          type='linear'
+          orientation='horizontal'
           onClick={setActive}
-          color="success"
-          aria-label="Progress indicator with completed steps"
+          color='success'
+          aria-label='Progress indicator with completed steps'
         />
       </div>
     );
@@ -246,20 +313,33 @@ export const CompletedSteps: Story = {
 export const SizeVariants: Story = {
   render: () => {
     const [active, setActive] = useState(1);
-    const steps: StepperStep[] = [
-      { label: 'Step 1' },
-      { label: 'Step 2' },
-      { label: 'Step 3' },
-    ];
+    const steps: StepperStep[] = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-6)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Stepper Size Variants</h3>
         </div>
-        {(['sm', 'md', 'lg'] as const).map((size) => (
-          <div key={size} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-            <p style={{ margin: 0, color: 'var(--text-secondary)', fontWeight: 'var(--font-weight-medium)', fontSize: 'var(--font-size-sm)' }}>
+        {(['sm', 'md', 'lg'] as const).map(size => (
+          <div
+            key={size}
+            style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}
+          >
+            <p
+              style={{
+                margin: 0,
+                color: 'var(--text-secondary)',
+                fontWeight: 'var(--font-weight-medium)',
+                fontSize: 'var(--font-size-sm)',
+              }}
+            >
               Size: {size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}
             </p>
             <Stepper
@@ -267,8 +347,8 @@ export const SizeVariants: Story = {
               steps={steps}
               value={active}
               size={size}
-              type="linear"
-              orientation="horizontal"
+              type='linear'
+              orientation='horizontal'
               onClick={setActive}
               aria-label={`${size} stepper`}
             />
@@ -286,20 +366,33 @@ export const SizeVariants: Story = {
 export const ColorVariants: Story = {
   render: () => {
     const [active, setActive] = useState(1);
-    const steps: StepperStep[] = [
-      { label: 'Step 1' },
-      { label: 'Step 2' },
-      { label: 'Step 3' },
-    ];
+    const steps: StepperStep[] = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-6)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Stepper Color Variants</h3>
         </div>
-        {(['primary', 'secondary', 'error', 'info', 'success', 'warning'] as const).map((color) => (
-          <div key={color} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-            <p style={{ margin: 0, color: 'var(--text-secondary)', fontWeight: 'var(--font-weight-medium)', fontSize: 'var(--font-size-sm)' }}>
+        {(['primary', 'secondary', 'error', 'info', 'success', 'warning'] as const).map(color => (
+          <div
+            key={color}
+            style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}
+          >
+            <p
+              style={{
+                margin: 0,
+                color: 'var(--text-secondary)',
+                fontWeight: 'var(--font-weight-medium)',
+                fontSize: 'var(--font-size-sm)',
+              }}
+            >
               {color.charAt(0).toUpperCase() + color.slice(1)}
             </p>
             <Stepper
@@ -307,8 +400,8 @@ export const ColorVariants: Story = {
               steps={steps}
               value={active}
               color={color}
-              type="linear"
-              orientation="horizontal"
+              type='linear'
+              orientation='horizontal'
               onClick={setActive}
               aria-label={`Stepper in ${color} color`}
             />
@@ -333,21 +426,34 @@ export const DisabledSteps: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Stepper with Disabled Steps</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Individual steps can be disabled to prevent navigation.
           </p>
         </div>
         <Stepper
-          id="disabled-steps"
+          id='disabled-steps'
           steps={steps}
           value={active}
-          type="non-linear"
-          orientation="horizontal"
+          type='non-linear'
+          orientation='horizontal'
           onClick={setActive}
-          aria-label="Stepper with disabled steps"
+          aria-label='Stepper with disabled steps'
         />
       </div>
     );
@@ -368,22 +474,35 @@ export const CustomIcons: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Stepper with Custom Icons</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Each step can display a custom icon instead of a number.
           </p>
         </div>
         <Stepper
-          id="custom-icons"
+          id='custom-icons'
           steps={steps}
           value={active}
-          type="linear"
-          orientation="horizontal"
+          type='linear'
+          orientation='horizontal'
           onClick={setActive}
-          color="success"
-          aria-label="Stepper with custom icons"
+          color='success'
+          aria-label='Stepper with custom icons'
         />
       </div>
     );
@@ -405,22 +524,35 @@ export const KeyboardNavigation: Story = {
     ];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Keyboard Navigation</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             ⌨️ Try: Arrow Keys • Home • End • Tab
           </p>
         </div>
         <Stepper
-          id="keyboard-nav"
+          id='keyboard-nav'
           steps={steps}
           value={active}
-          type="linear"
-          orientation="horizontal"
+          type='linear'
+          orientation='horizontal'
           onClick={setActive}
-          aria-label="Keyboard navigable stepper"
-          aria-live="assertive"
+          aria-label='Keyboard navigable stepper'
+          aria-live='assertive'
         />
       </div>
     );
@@ -441,29 +573,42 @@ export const ControlledStepper: Story = {
     ];
 
     const handleNext = () => {
-      setStep((prev) => Math.min(prev + 1, steps.length - 1));
+      setStep(prev => Math.min(prev + 1, steps.length - 1));
     };
 
     const handlePrev = () => {
-      setStep((prev) => Math.max(prev - 1, 0));
+      setStep(prev => Math.max(prev - 1, 0));
     };
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-4)' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-4)',
+          padding: 'var(--space-4)',
+        }}
+      >
         <div>
           <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Controlled Stepper</h3>
-          <p style={{ margin: 'var(--space-2) 0 0 0', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+          <p
+            style={{
+              margin: 'var(--space-2) 0 0 0',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
             Step state is managed externally with navigation buttons.
           </p>
         </div>
         <Stepper
-          id="controlled-stepper"
+          id='controlled-stepper'
           steps={steps}
           value={step}
-          type="linear"
-          orientation="horizontal"
-          color="primary"
-          aria-label="Controlled stepper"
+          type='linear'
+          orientation='horizontal'
+          color='primary'
+          aria-label='Controlled stepper'
         />
         <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
           <button
@@ -505,11 +650,11 @@ export const ControlledStepper: Story = {
 };
 
 /**
- * Horizontal Stepper - Linear flow
+ * Horizontal Stepper - Linear flow (Interactive)
  * Demonstrates a basic horizontal stepper with linear step progression.
  * User can only proceed forward through completed steps.
  */
-export const HorizontalLinear = () => {
+export const HorizontalLinearInteractive = () => {
   const [active, setActive] = useState(0);
   const steps: StepperStep[] = [
     { label: 'Account', description: 'Create your account', content: 'Account setup form' },
@@ -518,35 +663,30 @@ export const HorizontalLinear = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Horizontal Linear Stepper</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Horizontal Linear Stepper</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Use arrow keys or click steps to navigate. Linear type requires sequential progress.
         </Typography>
       </div>
       <Stepper
-        id="horizontal-linear"
+        id='horizontal-linear'
         steps={steps}
         activeStep={active}
-        type="linear"
-        orientation="horizontal"
+        type='linear'
+        orientation='horizontal'
         value={active}
         onClick={setActive}
-        aria-label="Account setup wizard"
-        aria-live="polite"
+        aria-label='Account setup wizard'
+        aria-live='polite'
       />
       <StepContent>{steps[active].content}</StepContent>
     </div>
   );
 };
 
-/**
- * Horizontal Stepper - Non-linear flow
- * Demonstrates a horizontal stepper with non-linear navigation.
- * User can jump to any step at any time.
- */
-export const HorizontalNonLinear = () => {
+export const HorizontalNonLinearDemo = () => {
   const [active, setActive] = useState(0);
   const steps: StepperStep[] = [
     { label: 'Step 1', description: 'First step', content: 'Content for step 1' },
@@ -556,57 +696,61 @@ export const HorizontalNonLinear = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Horizontal Non-Linear Stepper</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Horizontal Non-Linear Stepper</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Non-linear type allows jumping to any step without restrictions.
         </Typography>
       </div>
       <Stepper
-        id="horizontal-nonlinear"
+        id='horizontal-nonlinear'
         steps={steps}
         activeStep={active}
-        type="non-linear"
-        orientation="horizontal"
+        type='non-linear'
+        orientation='horizontal'
         onClick={setActive}
-        aria-label="Free navigation stepper"
+        aria-label='Free navigation stepper'
       />
       <StepContent>{steps[active].content}</StepContent>
     </div>
   );
 };
 
-/**
- * Vertical Stepper
- * Demonstrates a vertical stepper with stacked steps and descriptions.
- */
-export const VerticalStepper = () => {
+export const VerticalStepperDemo = () => {
   const [active, setActive] = useState(0);
   const steps: StepperStep[] = [
-    { label: 'Select Campaign', description: 'Choose campaign settings', content: 'Campaign selection form' },
-    { label: 'Create an Ad Group', description: 'Set up ad group', content: 'Ad group creation form' },
+    {
+      label: 'Select Campaign',
+      description: 'Choose campaign settings',
+      content: 'Campaign selection form',
+    },
+    {
+      label: 'Create an Ad Group',
+      description: 'Set up ad group',
+      content: 'Ad group creation form',
+    },
     { label: 'Create Ads', description: 'Design your ads', content: 'Ad creation form' },
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Vertical Stepper</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Vertical Stepper</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Vertical layout is useful for step-by-step wizards.
         </Typography>
       </div>
       <Stepper
-        id="vertical-stepper"
+        id='vertical-stepper'
         steps={steps}
         activeStep={active}
-        type="linear"
-        orientation="vertical"
+        type='linear'
+        orientation='vertical'
         onClick={setActive}
-        aria-label="Vertical wizard"
+        aria-label='Vertical wizard'
       />
-      <div className="ml-12 p-4 bg-gray-50 rounded">
+      <div className='ml-12 p-4 bg-gray-50 rounded'>
         <StepContent>{steps[active].content}</StepContent>
       </div>
     </div>
@@ -617,7 +761,7 @@ export const VerticalStepper = () => {
  * Alternative Labels
  * Demonstrates stepper with labels positioned below step indicators.
  */
-export const AlternativeLabels = () => {
+export const AlternativeLabelsDemo = () => {
   const [active, setActive] = useState(0);
   const steps: StepperStep[] = [
     { label: 'Select master blaster campaign settings', description: 'Step 1: Settings' },
@@ -626,22 +770,22 @@ export const AlternativeLabels = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Stepper with Alternative Labels</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Stepper with Alternative Labels</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Labels appear below step indicators instead of to the side.
         </Typography>
       </div>
       <Stepper
-        id="alternative-labels"
+        id='alternative-labels'
         steps={steps}
         activeStep={active}
-        type="linear"
-        orientation="horizontal"
+        type='linear'
+        orientation='horizontal'
         alternativeLabel
         onClick={setActive}
-        aria-label="Stepper with alternative label placement"
+        aria-label='Stepper with alternative label placement'
       />
     </div>
   );
@@ -651,7 +795,7 @@ export const AlternativeLabels = () => {
  * Completed Steps
  * Demonstrates stepper with completed steps marked with checkmarks.
  */
-export const CompletedSteps = () => {
+export const CompletedStepsDemo = () => {
   const [active, setActive] = useState(2);
   const steps: StepperStep[] = [
     { label: 'Step 1', description: 'Completed', completed: true },
@@ -660,22 +804,22 @@ export const CompletedSteps = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Stepper with Completed Steps</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Stepper with Completed Steps</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Completed steps display checkmarks instead of numbers.
         </Typography>
       </div>
       <Stepper
-        id="completed-steps"
+        id='completed-steps'
         steps={steps}
         activeStep={active}
-        type="linear"
-        orientation="horizontal"
+        type='linear'
+        orientation='horizontal'
         onClick={setActive}
-        color="success"
-        aria-label="Progress indicator with completed steps"
+        color='success'
+        aria-label='Progress indicator with completed steps'
       />
     </div>
   );
@@ -685,7 +829,7 @@ export const CompletedSteps = () => {
  * Color Variants
  * Demonstrates stepper in all available color themes using design tokens.
  */
-export const ColorVariants = () => {
+export const ColorVariantsDemo = () => {
   const [active, setActive] = useState(1);
   const steps: StepperStep[] = [
     { label: 'Step 1', description: 'First' },
@@ -703,11 +847,11 @@ export const ColorVariants = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
-      <Typography variant="h6">Stepper Color Variants</Typography>
-      {colors.map((color) => (
-        <div key={color} className="space-y-2">
-          <Typography variant="body2" className="font-semibold">
+    <div className='space-y-6 p-4'>
+      <Typography variant='h6'>Stepper Color Variants</Typography>
+      {colors.map(color => (
+        <div key={color} className='space-y-2'>
+          <Typography variant='body2' className='font-semibold'>
             {color.charAt(0).toUpperCase() + color.slice(1)}
           </Typography>
           <Stepper
@@ -715,8 +859,8 @@ export const ColorVariants = () => {
             steps={steps}
             activeStep={active}
             color={color}
-            type="linear"
-            orientation="horizontal"
+            type='linear'
+            orientation='horizontal'
             onClick={setActive}
             aria-label={`Stepper in ${color} color`}
           />
@@ -730,22 +874,18 @@ export const ColorVariants = () => {
  * Size Variants
  * Demonstrates stepper in different sizes: small, medium, large.
  */
-export const SizeVariants = () => {
+export const SizeVariantsDemo = () => {
   const [active, setActive] = useState(1);
-  const steps: StepperStep[] = [
-    { label: 'Step 1' },
-    { label: 'Step 2' },
-    { label: 'Step 3' },
-  ];
+  const steps: StepperStep[] = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
 
   const sizes: Array<'small' | 'medium' | 'large'> = ['small', 'medium', 'large'];
 
   return (
-    <div className="space-y-8 p-4">
-      <Typography variant="h6">Stepper Size Variants</Typography>
-      {sizes.map((size) => (
-        <div key={size} className="space-y-2">
-          <Typography variant="body2" className="font-semibold">
+    <div className='space-y-8 p-4'>
+      <Typography variant='h6'>Stepper Size Variants</Typography>
+      {sizes.map(size => (
+        <div key={size} className='space-y-2'>
+          <Typography variant='body2' className='font-semibold'>
             {size.charAt(0).toUpperCase() + size.slice(1)} Size
           </Typography>
           <Stepper
@@ -753,8 +893,8 @@ export const SizeVariants = () => {
             steps={steps}
             activeStep={active}
             size={size}
-            type="linear"
-            orientation="horizontal"
+            type='linear'
+            orientation='horizontal'
             onClick={setActive}
             aria-label={`${size} stepper`}
           />
@@ -768,7 +908,7 @@ export const SizeVariants = () => {
  * Disabled Steps
  * Demonstrates stepper with individually disabled steps.
  */
-export const DisabledSteps = () => {
+export const DisabledStepsDemo = () => {
   const [active, setActive] = useState(0);
   const steps: StepperStep[] = [
     { label: 'Step 1', description: 'Enabled' },
@@ -777,21 +917,21 @@ export const DisabledSteps = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Stepper with Disabled Steps</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Stepper with Disabled Steps</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Individual steps can be disabled to prevent navigation to them.
         </Typography>
       </div>
       <Stepper
-        id="disabled-steps"
+        id='disabled-steps'
         steps={steps}
         activeStep={active}
-        type="non-linear"
-        orientation="horizontal"
+        type='non-linear'
+        orientation='horizontal'
         onClick={setActive}
-        aria-label="Stepper with disabled steps"
+        aria-label='Stepper with disabled steps'
       />
     </div>
   );
@@ -801,7 +941,7 @@ export const DisabledSteps = () => {
  * Controlled Stepper
  * Demonstrates using controlled component pattern with value prop.
  */
-export const ControlledStepper = () => {
+export const ControlledStepperDemo = () => {
   const [step, setStep] = useState(0);
   const steps: StepperStep[] = [
     { label: 'Personal Info', content: 'Enter your name and email' },
@@ -810,44 +950,44 @@ export const ControlledStepper = () => {
   ];
 
   const handleNext = () => {
-    setStep((prev) => Math.min(prev + 1, steps.length - 1));
+    setStep(prev => Math.min(prev + 1, steps.length - 1));
   };
 
   const handlePrev = () => {
-    setStep((prev) => Math.max(prev - 1, 0));
+    setStep(prev => Math.max(prev - 1, 0));
   };
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Controlled Stepper</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Controlled Stepper</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Step state is managed externally with next/previous buttons.
         </Typography>
       </div>
       <Stepper
-        id="controlled-stepper"
+        id='controlled-stepper'
         steps={steps}
         value={step}
-        type="linear"
-        orientation="horizontal"
-        color="primary"
-        aria-label="Controlled stepper with navigation"
+        type='linear'
+        orientation='horizontal'
+        color='primary'
+        aria-label='Controlled stepper with navigation'
       />
-      <div className="space-y-4">
+      <div className='space-y-4'>
         <StepContent>{steps[step].content}</StepContent>
-        <div className="flex gap-4">
+        <div className='flex gap-4'>
           <button
             onClick={handlePrev}
             disabled={step === 0}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+            className='px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50'
           >
             Previous
           </button>
           <button
             onClick={handleNext}
             disabled={step === steps.length - 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+            className='px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50'
           >
             Next
           </button>
@@ -861,7 +1001,7 @@ export const ControlledStepper = () => {
  * Custom Icons
  * Demonstrates stepper with custom icons for each step.
  */
-export const CustomIcons = () => {
+export const CustomIconsDemo = () => {
   const [active, setActive] = useState(1);
   const steps: StepperStep[] = [
     {
@@ -882,22 +1022,22 @@ export const CustomIcons = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Stepper with Custom Icons</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Stepper with Custom Icons</Typography>
+        <Typography variant='body2' color='textSecondary'>
           Each step can display a custom icon instead of a number.
         </Typography>
       </div>
       <Stepper
-        id="custom-icons"
+        id='custom-icons'
         steps={steps}
         activeStep={active}
-        type="linear"
-        orientation="horizontal"
+        type='linear'
+        orientation='horizontal'
         onClick={setActive}
-        color="success"
-        aria-label="Stepper with custom icons"
+        color='success'
+        aria-label='Stepper with custom icons'
       />
     </div>
   );
@@ -907,7 +1047,7 @@ export const CustomIcons = () => {
  * Keyboard Navigation
  * Demonstrates keyboard accessibility features.
  */
-export const KeyboardNavigation = () => {
+export const KeyboardNavigationDemo = () => {
   const [active, setActive] = useState(0);
   const steps: StepperStep[] = [
     { label: 'Step 1', description: 'Use arrow keys or Home/End keys to navigate' },
@@ -917,23 +1057,23 @@ export const KeyboardNavigation = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className='space-y-6 p-4'>
       <div>
-        <Typography variant="h6">Keyboard Navigation</Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant='h6'>Keyboard Navigation</Typography>
+        <Typography variant='body2' color='textSecondary'>
           ⌨️ Try using: Arrow Keys • Home • End • Tab for full keyboard accessibility
         </Typography>
       </div>
       <Stepper
-        id="keyboard-nav"
+        id='keyboard-nav'
         steps={steps}
         activeStep={active}
-        type="linear"
-        orientation="horizontal"
+        type='linear'
+        orientation='horizontal'
         step={1}
         onClick={setActive}
-        aria-label="Keyboard navigable stepper"
-        aria-live="assertive"
+        aria-label='Keyboard navigable stepper'
+        aria-live='assertive'
       />
     </div>
   );

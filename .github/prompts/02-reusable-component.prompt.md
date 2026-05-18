@@ -1,3 +1,71 @@
+## GLOBAL GOVERNANCE RULE
+
+You MUST read and strictly follow the following instruction files:
+
+- .github/instructions/reactjs.instructions.md
+- .github/instructions/a11y.instructions.md
+
+Apply them BEFORE applying any rules in this file.
+
+If any conflict exists, the instruction files override this prompt.
+
+Do not generate code until both instruction files have been analyzed.
+
+---
+
+## Mandatory Design Token Rules (Non-Negotiable)
+
+- Design tokens are defined in: `src/styles/tokens.css`
+- Tokens are exposed as semantic Tailwind utility classes
+- Components MUST use ONLY token-based utilities
+
+NEVER use Tailwind default utilities such as:
+- bg-blue-*, bg-red-*, text-gray-*
+- p-4, px-6, py-2, m-4
+- rounded-lg, rounded-xl
+- shadow-md, shadow-lg
+- text-sm, text-base
+
+ALWAYS use semantic token utilities:
+- Colors → bg-primary, text-primary-foreground, bg-danger
+- Spacing → px-control-md, py-control-md
+- Radius → rounded-control
+- Typography → text-body-md, font-body-medium
+- Motion → transition-motion-fast
+
+## Mandatory Component File Structure (Non-Negotiable)
+
+When generating a reusable component, ALWAYS follow this exact structure:
+
+src/components/<ComponentName>/
+├── <ComponentName>.tsx
+├── <ComponentName>.stories.tsx
+└── index.ts
+
+Rules:
+  * <ComponentName> MUST be PascalCase
+  * Component implementation MUST live in `<ComponentName>.tsx`
+  * Storybook stories MUST live in `<ComponentName>.stories.tsx`
+  * `index.ts` MUST export the component
+  * No additional files are allowed
+
+## Output Restrictions (Very Important)
+
+The generator MUST output ONLY the following files:
+
+1. `<ComponentName>.tsx`
+2. `<ComponentName>.stories.tsx`
+3. `index.ts`
+
+STRICT RULES:
+  * Do NOT generate `.md` files
+  * Do NOT generate documentation files
+  * Do NOT generate README content
+  * Do NOT include explanations or comments outside code
+  * Do NOT describe the component in text
+
+Output ONLY valid TypeScript / TSX code for the required files
+
 ## General Guidelines for Common Components
 
 1. **Reusability First**
@@ -17,11 +85,15 @@
 
 4. **Styling**
 
-   * Use **TailwindCSS utility classes** for styling.
-   * Allow overriding styles via a `className` prop.
-   * Do not inline hardcoded styles unless necessary.
-   * Follow design tokens from `tokens.css` for colors, spacing, typography, etc. If a token does not exist, add it to `tokens.css` and use it in the component.
-   * don't declare anything if it is not being used in the component.
+    * Use **TailwindCSS utility classes mapped to design tokens**
+    * Tokens MUST come from `src/styles/tokens.css`
+    * Allow overriding styles via a `className` prop
+    * Do NOT use Tailwind default color, spacing, radius, shadow, or typography utilities
+    * Do NOT inline hardcoded styles
+    * If a required token does not exist:
+      * Do NOT invent a class
+      * Add a TODO comment to update `tokens.css`
+    * Don't declare anything if it is not being used in the component
 
 5. **Accessibility (a11y)**
 
@@ -61,10 +133,12 @@ Every **common component** should, where applicable, support:
 
 ---
 
+## stories should be created for each reusable component to demonstrate its usage with different props and variants. This helps ensure that the component is well-documented and easily testable across various scenarios.
+
 ## Example Component Template
 
 ```tsx
-// src/components/Button.tsx
+// src/components/Button/Button.tsx
 import React from "react";
 import clsx from "clsx";
 
@@ -77,21 +151,29 @@ interface ButtonProps {
   className?: string;
 }
 
-const baseStyles = "rounded-xl font-medium transition-colors duration-200";
+const baseStyles = `
+  rounded-control
+  font-body-medium
+  transition-motion-normal
+`;
 
 // Variant styles should use design tokens from tokens.css
 
-const variantStyles: Record<string, string> = {
-  primary: "bg-primary text-white hover:bg-primary-dark",
-  secondary: "bg-secondary text-black hover:bg-secondary-dark",
-  danger: "bg-danger text-white hover:bg-danger-dark",
-  link: "text-link underline hover:text-link-dark",
+type Variant = "primary" | "secondary" | "danger" | "link";
+
+const variantStyles: Record<Variant, string> = {
+  primary: "bg-primary text-primary-foreground hover:bg-primary-hover",
+  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
+  danger: "bg-danger text-danger-foreground hover:bg-danger-hover",
+  link: "text-link underline hover:text-link-hover",
 };
 
-const sizeStyles: Record<string, string> = {
-  sm: "px-2 py-1 text-sm",
-  md: "px-4 py-2 text-base",
-  lg: "px-6 py-3 text-lg",
+type Size = "sm" | "md" | "lg";
+
+const sizeStyles: Record<Size, string> = {
+  sm: "px-control-sm py-control-sm text-body-sm",
+  md: "px-control-md py-control-md text-body-md",
+  lg: "px-control-lg py-control-lg text-body-lg",
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -160,7 +242,17 @@ This project utilizes `tokens.css` for consistent design values. Here's how to m
 For a button with primary variant and large size:
 
 ```tsx
-<button className="bg-blue-600 text-white rounded-lg p-4">
+<button
+  className="
+    bg-primary
+    text-primary-foreground
+    rounded-control
+    px-control-lg
+    py-control-lg
+    text-body-md
+    transition-motion-fast
+  "
+>
   Click Me
 </button>
 ```
@@ -183,7 +275,7 @@ Refer to `tokens.css` for the comprehensive list of design tokens available for 
 
 ## Key Improvements:
 
-**Complete token reference** – All 70+ design tokens documented with usage
+**Complete token reference** – All design tokens documented with usage
 **Zero hardcoded values** – Every example uses only CSS variables
 **Comprehensive color palette** – Brand, semantic, neutral, text, background, border colors
 **Full spacing system** – 10 spacing tokens for consistent layouts
@@ -197,3 +289,14 @@ Refer to `tokens.css` for the comprehensive list of design tokens available for 
 **Validation checklist** – Comprehensive deliverable verification
 **Philosophy section** – Explains design system approach
 **Maintenance guidance** – How to evolve tokens over time
+
+## Token Validation Checklist (Must Pass)
+
+Before returning a component, verify:
+
+- [ ] No Tailwind default colors are used
+- [ ] No numeric spacing utilities (p-4, px-6, etc.)
+- [ ] No rounded-* utilities outside tokens
+- [ ] No shadow-* utilities outside tokens
+- [ ] All styles map to tokens.css
+- [ ] tokens.css is assumed to be globally imported

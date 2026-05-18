@@ -2,6 +2,13 @@
 
 You are an expert React architect. Generate a **production-ready boilerplate project setup** for a **React application using Vite + TypeScript + TailwindCSS**, following **industry best practices** for scalability, linting, formatting, and routing.
 
+IMPORTANT:
+Before generating any code, read and strictly follow:
+.github/instructions/reactjs.instructions.md
+
+If any conflict exists between this prompt and the instruction file,
+prioritize the instruction file.
+
 ---
 
 ## Requirements

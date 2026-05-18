@@ -21,6 +21,7 @@
  *   - id: Unique identifier for the input
  *   - name: HTML name attribute for form submission
  *   - className: Additional CSS classes for styling override
+ *   - label: Display label above the input field
  *   - value: Current input/selected value
  *   - placeholder: Placeholder text for the input
  *   - required: Whether the field is required
@@ -31,6 +32,9 @@
  *   - autoFocus: Auto-focus on mount
  *   - autoComplete: HTML autocomplete attribute
  *   - options: Array of suggestion options (string[] or {label, value}[])
+ *   - error: Error message to display (legacy prop)
+ *   - hasError: Whether the field has an error
+ *   - errorMessage: Error message to display below the field
  *   - onChange: Called when input value changes
  *   - onFocus: Called when input receives focus
  *   - onBlur: Called when input loses focus
@@ -68,6 +72,7 @@ export interface AutoCompleteProps {
   id?: string;
   name?: string;
   className?: string;
+  label?: string;
   value?: string;
   placeholder?: string;
   required?: boolean;
@@ -78,6 +83,8 @@ export interface AutoCompleteProps {
   autoFocus?: boolean;
   autoComplete?: string;
   options?: (string | Option)[];
+  hasError?: boolean;
+  errorMessage?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -88,7 +95,6 @@ export interface AutoCompleteProps {
   'aria-disabled'?: boolean;
   'aria-controls'?: string;
   'aria-live'?: 'off' | 'polite' | 'assertive';
-  'aria-invalid'?: boolean;
   'aria-required'?: boolean;
 }
 
@@ -119,6 +125,7 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
       id,
       name,
       className = '',
+      label,
       value = '',
       placeholder = 'Search...',
       required = false,
@@ -129,6 +136,8 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
       autoFocus = false,
       autoComplete = 'off',
       options = [],
+      hasError = false,
+      errorMessage = '',
       onChange,
       onFocus,
       onBlur,
@@ -139,7 +148,6 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
       'aria-disabled': ariaDisabled,
       'aria-controls': ariaControls,
       'aria-live': ariaLive = 'polite',
-      'aria-invalid': ariaInvalid = false,
       'aria-required': ariaRequired = required,
     },
     ref
@@ -156,6 +164,13 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
     const containerRef = useRef<HTMLDivElement>(null);
 
     React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+
+    /**
+     * Sync inputValue with controlled value prop
+     */
+    React.useEffect(() => {
+      setInputValue(value);
+    }, [value]);
 
     // Normalize and filter options
     const normalizedOptions = useMemo(
@@ -229,6 +244,24 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
     );
 
     /**
+     * Handle option selection
+     */
+    const handleSelectOption = useCallback(
+      (option: Option) => {
+        setInputValue(option.label);
+        setIsOpen(false);
+        setHighlightedIndex(null);
+
+        if (onSelect) {
+          onSelect(option);
+        }
+
+        inputRef.current?.focus();
+      },
+      [onSelect]
+    );
+
+    /**
      * Handle keyboard navigation
      */
     const handleKeyDown = useCallback(
@@ -275,25 +308,7 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
             break;
         }
       },
-      [isOpen, filteredOptions, highlightedIndex, inputValue]
-    );
-
-    /**
-     * Handle option selection
-     */
-    const handleSelectOption = useCallback(
-      (option: Option) => {
-        setInputValue(option.label);
-        setIsOpen(false);
-        setHighlightedIndex(null);
-
-        if (onSelect) {
-          onSelect(option);
-        }
-
-        inputRef.current?.focus();
-      },
-      [onSelect]
+      [isOpen, filteredOptions, highlightedIndex, inputValue, handleSelectOption]
     );
 
     /**
@@ -325,6 +340,21 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
         ref={containerRef}
         className={`relative w-full ${className}`}
       >
+        {/* Label */}
+        {label && (
+          <label
+            htmlFor={fieldId}
+            className="block text-sm font-medium text-gray-900 mb-2"
+          >
+            {label}
+            {required && (
+              <span className="text-red-600 ml-1" aria-label="required">
+                *
+              </span>
+            )}
+          </label>
+        )}
+
         {/* Input Field */}
         <input
           ref={inputRef}
@@ -340,7 +370,7 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
           title={title}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          aria-describedby={ariaDescribedby}
+          aria-describedby={hasError ? `${fieldId}-error` : ariaDescribedby}
           aria-disabled={isFieldDisabled}
           aria-controls={isOpen ? listboxId : undefined}
           aria-expanded={isOpen && suggestionCount > 0}
@@ -349,7 +379,7 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
               ? `${listboxId}-option-${highlightedIndex}`
               : undefined
           }
-          aria-invalid={ariaInvalid}
+          aria-invalid={hasError}
           aria-required={ariaRequired}
           aria-autocomplete="list"
           role="combobox"
@@ -358,16 +388,29 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
           onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
           className={`
-            w-full border border-[var(--border-color)] rounded-[var(--radius-md)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
-            focus:border-[var(--border-color-focus)]
+            w-full border rounded-[var(--radius-md)]
+            focus:outline-none focus:ring-2
             transition-all duration-200 ease-in-out
             ${sizeClasses}
+            ${hasError
+              ? 'border-red-600 focus:ring-red-500 focus:border-red-600'
+              : 'border-[var(--border-color)] focus:ring-[var(--color-primary)] focus:border-[var(--border-color-focus)]'
+            }
             ${isFieldDisabled ? 'bg-[var(--bg-muted)] text-[var(--text-muted)] cursor-[var(--cursor-disabled)] opacity-[var(--opacity-disabled)]' : 'bg-[var(--bg-surface)] text-[var(--text-primary)]'}
-            ${ariaInvalid ? 'border-[var(--color-error)] focus:ring-[var(--color-error)]' : ''}
             ${readOnly ? 'cursor-default' : ''}
           `}
         />
+
+        {/* Error Message */}
+        {hasError && (
+          <div
+            id={`${fieldId}-error`}
+            role="alert"
+            className="text-red-600 text-sm mt-1"
+          >
+            {errorMessage}
+          </div>
+        )}
 
         {/* Live Region Announcements */}
         <div
@@ -431,7 +474,7 @@ const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps>(
               absolute top-full left-0 right-0 z-[var(--z-dropdown)]
               bg-[var(--bg-surface)] border border-[var(--border-color)]
               rounded-[var(--radius-md)] shadow-[var(--shadow-md)]
-              px-4 py-3 mt-2 text-[var(--text-muted)]
+              px-4 py-2 mt-1 text-[var(--text-muted)]
               text-center font-[var(--font-size-md)]
             `}
           >

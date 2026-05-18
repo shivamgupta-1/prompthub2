@@ -28,8 +28,7 @@ export interface CardProps {
   className?: string;
   /** Tab index for keyboard navigation (makes card interactive) */
   tabIndex?: number;
-  /** Card size - affects padding and spacing */
-  size?: 'sm' | 'md' | 'lg';
+  /** Additional size handled via CSS classes; remove `size` prop. */
   /** Visual variant - elevation uses shadow, outlined uses border */
   variant?: 'elevation' | 'outlined' | 'outlined-raised';
   /** Click handler (makes card interactive) */
@@ -38,6 +37,10 @@ export interface CardProps {
   onFocus?: (e: React.FocusEvent<HTMLElement>) => void;
   /** Blur event handler */
   onBlur?: (e: React.FocusEvent<HTMLElement>) => void;
+  /** Mouse enter event handler */
+  onMouseEnter?: (e: React.MouseEvent<HTMLElement>) => void;
+  /** Mouse leave event handler */
+  onMouseLeave?: (e: React.MouseEvent<HTMLElement>) => void;
   /** HTML title attribute for tooltip */
   title?: string;
   /** Card content */
@@ -50,23 +53,11 @@ export interface CardProps {
   'aria-current'?: boolean | 'page' | 'step' | 'location' | 'date' | 'time';
   'aria-live'?: 'off' | 'polite' | 'assertive';
   'aria-haspopup'?: boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog';
+  /** When true, do not apply the variant's background/border styles so callers can control them via classes */
+  disableVariantStyles?: boolean;
 }
 
-// Size configuration using design tokens
-const sizeConfig = {
-  sm: {
-    padding: 'var(--space-3)',
-    minHeight: '120px',
-  },
-  md: {
-    padding: 'var(--space-4)',
-    minHeight: '160px',
-  },
-  lg: {
-    padding: 'var(--space-6)',
-    minHeight: '200px',
-  },
-};
+// Note: size is now controlled via `className` (responsive classes).
 
 // Variant configuration using design tokens
 const variantConfig = {
@@ -89,13 +80,15 @@ const variantConfig = {
 
 const Card: React.FC<CardProps> = ({
   id,
+  disableVariantStyles = true,
   className = '',
   tabIndex,
-  size = 'md',
   variant = 'elevation',
   onClick,
   onFocus,
   onBlur,
+  onMouseEnter: onMouseEnterProp,
+  onMouseLeave: onMouseLeaveProp,
   title,
   children,
   'aria-label': ariaLabel,
@@ -106,7 +99,6 @@ const Card: React.FC<CardProps> = ({
   'aria-live': ariaLive,
   'aria-haspopup': ariaHaspopup,
 }) => {
-  const currentSize = sizeConfig[size];
   const currentVariant = variantConfig[variant];
 
   // Base styles using design tokens
@@ -118,12 +110,12 @@ const Card: React.FC<CardProps> = ({
     color: 'var(--text-primary)',
   };
 
-  const cardStyles: React.CSSProperties = {
-    ...baseStyles,
-    ...currentVariant,
-    padding: currentSize.padding,
-    minHeight: currentSize.minHeight,
-  };
+  const cardStyles: React.CSSProperties = disableVariantStyles
+    ? baseStyles
+    : {
+        ...baseStyles,
+        ...currentVariant,
+      };
 
   // Determine if card is interactive (has click handler or is focusable)
   const isInteractive = Boolean(onClick || tabIndex !== undefined);
@@ -138,7 +130,7 @@ const Card: React.FC<CardProps> = ({
     switch (state) {
       case 'hover':
         return {
-          backgroundColor: 'var(--bg-hover)',
+          // backgroundColor: 'var(--bg-hover)',
           boxShadow:
             variant === 'elevation' || variant === 'outlined-raised'
               ? 'var(--shadow-lg)'
@@ -157,11 +149,13 @@ const Card: React.FC<CardProps> = ({
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     if (!isInteractive) return;
     Object.assign(e.currentTarget.style, getInteractiveStateStyles('hover'));
+    onMouseEnterProp?.(e);
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     if (!isInteractive) return;
     Object.assign(e.currentTarget.style, interactiveStyles);
+    onMouseLeaveProp?.(e);
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
@@ -193,7 +187,7 @@ const Card: React.FC<CardProps> = ({
       {isInteractive ? (
         <button
           {...commonProps}
-          className={`${className}`}
+          className={className}
           tabIndex={tabIndex ?? 0}
           onClick={onClick}
           onFocus={handleFocus}

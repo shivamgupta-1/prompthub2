@@ -1,19 +1,29 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import './App.css';
-import Login from './pages/Login';
 
-/**
- * App Component
- *
- * Main application component that serves as the root wrapper.
- * Configures routing for all pages including Home (Login).
- */
+import Navbar from './components/NavBar/NavBar';
+import RequireRole from './components/RequireRole';
+import Home from './pages/Home/Home';
+import { Dashboard } from './pages/Dashboard';
+import Admin from './pages/Admin';
+
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/admin"
+          element={
+            <RequireRole allowedRole="Admin">
+              <Admin />
+            </RequireRole>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }
 

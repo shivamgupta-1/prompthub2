@@ -13,22 +13,18 @@ export interface Props {
   defaultValue?: string | number;
   placeholder?: string;
   label?: string;
-  required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
   maxLength?: number;
   minLength?: number;
   endDecorator?: React.ReactNode;
-  error?: string;
   size?: TextFieldSize;
   startDecorator?: React.ReactNode;
   variant?: TextFieldVariant;
   autoFocus?: boolean;
   isRequired?: boolean;
-  isValid?: boolean;
   hasError?: boolean;
   errorMessage?: string;
-  validationRules?: Record<string, any>;
   autoComplete?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -50,22 +46,18 @@ const TextField = ({
   defaultValue,
   placeholder,
   label,
-  required = false,
   disabled = false,
   readOnly = false,
   maxLength,
   minLength,
   endDecorator,
-  error,
   size = 'medium',
   startDecorator,
   variant = 'default',
   autoFocus = false,
   isRequired,
-  isValid,
   hasError,
   errorMessage,
-  validationRules,
   autoComplete,
   onChange,
   onFocus,
@@ -73,21 +65,14 @@ const TextField = ({
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
   'aria-describedby': ariaDescribedby,
-  'aria-invalid': ariaInvalid,
   'aria-required': ariaRequired,
   tooltip,
   ...rest
 }: Props) => {
-  // Map isRequired from JSON config to required prop
-  const isFieldRequired = required || isRequired || false;
-  // Use error prop, or fallback to errorMessage from JSON config
-  const fieldError = error || errorMessage || '';
-  // Use ariaInvalid or fallback to hasError from JSON config
-  const isFieldInvalid = ariaInvalid || hasError || false;
   const generatedId = useId();
   const fieldId = id || `textfield-${generatedId}`;
   const labelId = label ? `${fieldId}-label` : undefined;
-  const errorId = fieldError ? `${fieldId}-error` : undefined;
+  const errorId = errorMessage ? `${fieldId}-error` : undefined;
 
   const sizeClasses = useMemo(() => {
     const sizes = {
@@ -101,8 +86,7 @@ const TextField = ({
   const variantClasses = useMemo(() => {
     const variants = {
       default: 'border border-gray-300 bg-white hover:border-gray-400 focus:border-blue-500',
-      outlined:
-        'border-2 border-gray-300 bg-white hover:border-gray-400 focus:border-blue-500',
+      outlined: 'border-2 border-gray-300 bg-white hover:border-gray-400 focus:border-blue-500',
       filled: 'border-b-2 border-gray-300 bg-gray-50 hover:bg-gray-100 focus:border-blue-500',
     };
     return variants[variant];
@@ -112,7 +96,7 @@ const TextField = ({
     return [ariaLabelledby, ariaDescribedby, errorId].filter(Boolean).join(' ');
   }, [ariaLabelledby, ariaDescribedby, errorId]);
 
-  const isInvalid = fieldError || isFieldInvalid;
+  const isInvalid = errorMessage || hasError;
 
   const inputClasses = [
     'w-full',
@@ -140,17 +124,18 @@ const TextField = ({
         <label
           id={labelId}
           htmlFor={fieldId}
-          className={`text-sm font-medium ${
-            isInvalid ? 'text-red-600' : 'text-gray-700'
-          } ${isFieldRequired ? 'after:content-["*"] after:ml-1 after:text-red-500' : ''}`}
+          className={`text-sm font-medium 'text-gray-700'
+          } ${isRequired ? 'after:content-["*"] after:ml-1 after:text-red-500' : ''}`}
         >
           {label}
         </label>
       )}
 
-      <div className="flex items-center w-full">
+      <div className='flex items-center w-full'>
         {startDecorator && (
-          <div className={`flex items-center px-3 py-2 text-gray-600 ${size === 'small' ? 'text-sm' : 'text-base'}`}>
+          <div
+            className={`flex items-center px-3 py-2 text-gray-600 ${size === 'small' ? 'text-sm' : 'text-base'}`}
+          >
             {startDecorator}
           </div>
         )}
@@ -175,21 +160,23 @@ const TextField = ({
           aria-label={ariaLabel}
           aria-labelledby={labelId || ariaLabelledby}
           aria-describedby={descriptionIds || undefined}
-          aria-invalid={isInvalid ? 'true' : 'false'}
-          aria-required={ariaRequired || isFieldRequired}
+          aria-invalid={hasError ? 'true' : 'false'}
+          aria-required={ariaRequired || isRequired}
           {...rest}
         />
 
         {endDecorator && (
-          <div className={`flex items-center px-3 py-2 text-gray-600 ${size === 'small' ? 'text-sm' : 'text-base'}`}>
+          <div
+            className={`flex items-center px-3 py-2 text-gray-600 ${size === 'small' ? 'text-sm' : 'text-base'}`}
+          >
             {endDecorator}
           </div>
         )}
       </div>
 
-      {fieldError && (
-        <span id={errorId} className="text-sm text-red-600" role="alert">
-          {fieldError}
+      {hasError && (
+        <span id={errorId} className='text-sm text-red-600' role='alert'>
+          {errorMessage}
         </span>
       )}
     </div>

@@ -89,10 +89,10 @@ const validateFieldRules = (item: Record<string, unknown>, validationRules: Reco
     for (const rule in validationRules) {
         const ruleFn = validationRulesMethod[rule as keyof typeof validationRulesMethod];
         if (!ruleFn) continue;
-        
+
         const ruleValue = validationRules[rule].value;
         const ruleErrorMessage = validationRules[rule].errorMessage as string | undefined;
-        
+
         // Call the validation function with appropriate parameters
         const result = (ruleFn as (label: string, value: unknown, ruleValue: unknown, errorMessage?: string) => { valid: boolean; errorMessage: string })(
             item.label as string,
@@ -100,7 +100,7 @@ const validateFieldRules = (item: Record<string, unknown>, validationRules: Reco
             ruleValue,
             ruleErrorMessage
         );
-        
+
         if (!result.valid) {
             item.isValid = false;
             Object.assign(item, { errorMessage: result.errorMessage });
@@ -116,15 +116,15 @@ const validateFieldRules = (item: Record<string, unknown>, validationRules: Reco
  */
 const validateField = (item: Record<string, unknown>, isRequired: boolean): boolean => {
     const validationRules = (item.validationRules as Record<string, Record<string, unknown>>) || {};
-    
+
     if (isRequired) {
         return validateFieldRules(item, validationRules);
     }
-    
+
     if (!isEmpty(item.value)) {
         return validateFieldRules(item, validationRules);
     }
-    
+
     item.isValid = true;
     return true;
 };
@@ -194,6 +194,7 @@ export const isDecimal = (value: string): boolean => {
 
 export const isEmpty = (value: unknown): boolean => {
     if (value === null || value === undefined) return true;
+    if (typeof value === 'boolean') return !value;
     if (typeof value === 'string') return value.trim().length === 0;
     if (Array.isArray(value)) return value.length === 0;
     if (typeof value === 'object') return Object.keys(value).length === 0;

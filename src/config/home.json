@@ -1,0 +1,205 @@
+{
+  "firstName": {
+    "id": "firstName",
+    "type": "text",
+    "name": "firstName",
+    "placeholder": "Enter your first name",
+    "label": "First Name",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "First Name is required."
+      },
+      "minLength": {
+        "value": 2,
+        "errorMessage": "First Name must be at least 2 characters long."
+      }
+    },
+    "ariaLabel": "First Name",
+    "ariaDescribedBy": "firstNameHelp",
+    "tooltip": "Enter your first name"
+  },
+  "lastName": {
+    "id": "lastName",
+    "type": "text",
+    "name": "lastName",
+    "placeholder": "Enter your last name",
+    "label": "Last Name",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "Last Name is required."
+      },
+      "minLength": {
+        "value": 2,
+        "errorMessage": "Last Name must be at least 2 characters long."
+      }
+    },
+    "ariaLabel": "Last Name",
+    "ariaDescribedBy": "lastNameHelp",
+    "tooltip": "Enter your last name"
+  },
+  "phoneNumber": {
+    "id": "phoneNumber",
+    "type": "tel",
+    "name": "phoneNumber",
+    "placeholder": "Enter your phone number",
+    "label": "Phone Number",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "Phone Number is required."
+      },
+      "pattern": {
+        "value": "MOBILE_NUMBER",
+        "errorMessage": "Please enter a valid 10-digit phone number."
+      }
+    },
+    "ariaLabel": "Phone Number",
+    "ariaDescribedBy": "phoneNumberHelp",
+    "tooltip": "Enter your contact phone number (10 digits)"
+  },
+  "department": {
+    "id": "department",
+    "type": "select",
+    "name": "department",
+    "placeholder": "Select your department",
+    "label": "Department",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "Department selection is required."
+      }
+    },
+    "ariaLabel": "Department",
+    "ariaDescribedBy": "departmentHelp",
+    "tooltip": "Select your department or team",
+    "options": [
+      { "value": "", "label": "Select your department" },
+      { "value": "engineering", "label": "Engineering" },
+      { "value": "design", "label": "Design" },
+      { "value": "product", "label": "Product" },
+      { "value": "marketing", "label": "Marketing" },
+      { "value": "sales", "label": "Sales" }
+    ]
+  },
+  "city": {
+    "id": "city",
+    "type": "text",
+    "name": "city",
+    "placeholder": "Enter your city",
+    "label": "City",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "City is required."
+      }
+    },
+    "ariaLabel": "City",
+    "ariaDescribedBy": "cityHelp",
+    "tooltip": "Enter the city you are located in",
+    "options": [
+      "New York",
+      "Los Angeles",
+      "Chicago",
+      "Houston",
+      "Phoenix",
+      "Philadelphia",
+      "San Antonio",
+      "San Diego",
+      "Dallas",
+      "San Jose"
+    ]
+  },
+  "experience": {
+    "id": "experience",
+    "type": "number",
+    "name": "experience",
+    "placeholder": "Enter years of experience",
+    "label": "Years of Experience",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "Years of Experience is required."
+      },
+      "min": {
+        "value": 0,
+        "errorMessage": "Experience cannot be negative."
+      },
+      "max": {
+        "value": 100,
+        "errorMessage": "Experience cannot exceed 100 years."
+      }
+    },
+    "ariaLabel": "Years of Experience",
+    "ariaDescribedBy": "experienceHelp",
+    "tooltip": "Enter your years of professional experience"
+  },
+  "subscribe": {
+    "id": "subscribe",
+    "type": "checkbox",
+    "name": "subscribe",
+    "label": "Subscribe to newsletter",
+    "value": false,
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "You must subscribe to the newsletter."
+      }
+    },
+    "ariaLabel": "Subscribe to newsletter",
+    "ariaDescribedBy": "subscribeHelp",
+    "tooltip": "Receive updates and newsletters in your inbox"
+  },
+  "role": {
+    "id": "role",
+    "type": "radio",
+    "name": "role",
+    "label": "Select your role",
+    "value": "",
+    "isRequired": true,
+    "hasError": false,
+    "errorMessage": "",
+    "validationRules": {
+      "required": {
+        "value": true,
+        "errorMessage": "Role selection is required."
+      }
+    },
+    "ariaLabel": "Role",
+    "ariaDescribedBy": "roleHelp",
+    "tooltip": "Select your primary role",
+    "options": [
+      { "value": "employee", "label": "Employee" },
+      { "value": "manager", "label": "Manager" },
+      { "value": "admin", "label": "Administrator" }
+    ]
+  }
+}

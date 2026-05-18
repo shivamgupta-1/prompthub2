@@ -33,8 +33,6 @@ export interface NumberFieldProps {
   placeholder?: string;
   /** Label text displayed above the field */
   label?: React.ReactNode;
-  /** Whether the field is required */
-  required?: boolean;
   /** Whether the field is disabled */
   disabled?: boolean;
   /** Whether the field is read-only */
@@ -47,8 +45,10 @@ export interface NumberFieldProps {
   step?: number | string;
   /** Title attribute for tooltip */
   title?: string;
-  /** Whether the field has an error state */
-  error?: boolean;
+  /** Whether the field has an error */
+  hasError?: boolean;
+  /** Error message to display below the field */
+  errorMessage?: string;
   /** Size of the input field */
   size?: 'sm' | 'md' | 'lg';
   /** Visual variant of the input */
@@ -61,6 +61,8 @@ export interface NumberFieldProps {
   autoComplete?: string;
   /** Active step indicator (for stepper usage) */
   activeStep?: number;
+  /** Whether the field is required (alternate prop name from config) */
+  isRequired?: boolean;
   /** Change event handler */
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   /** Focus event handler */
@@ -128,20 +130,21 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
     defaultValue,
     placeholder,
     label,
-    required,
     disabled,
     readOnly,
     min,
     max,
     step,
     title,
-    error = false,
+    hasError = false,
+    errorMessage = '',
     size = 'md',
     variant = 'outlined',
     inputRef,
     autoFocus,
     autoComplete,
     activeStep,
+    isRequired,
     onChange,
     onFocus,
     onBlur,
@@ -150,7 +153,6 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
     'aria-describedby': ariaDescribedby,
     'aria-disabled': ariaDisabled,
     'aria-live': ariaLive,
-    'aria-invalid': ariaInvalid,
     'aria-required': ariaRequired,
   } = props;
 
@@ -190,12 +192,9 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
     transition: `all var(--transition-normal)`,
     opacity: disabled ? 'var(--opacity-disabled)' : 1,
     cursor: disabled ? 'var(--cursor-disabled)' : 'text',
+    borderColor: hasError ? 'var(--color-error)' : 'var(--border-color)',
     ...sizeStyle,
     ...variantStyle,
-    ...(error && {
-      borderColor: 'var(--color-error)',
-      borderWidth: '1px',
-    }),
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -209,14 +208,14 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLInputElement>) => {
-    if (!disabled && !error) {
+    if (!disabled && !hasError) {
       (e.currentTarget as HTMLInputElement).style.borderColor = 'var(--border-color-hover)';
     }
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLInputElement>) => {
-    if (!error) {
-      (e.currentTarget as HTMLInputElement).style.borderColor = 'var(--border-color)';
+    if (!disabled) {
+      (e.currentTarget as HTMLInputElement).style.borderColor = hasError ? 'var(--color-error)' : 'var(--border-color)';
     }
   };
 
@@ -225,7 +224,7 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
       {label && (
         <label htmlFor={id} style={labelStyle}>
           {label}
-          {required && (
+          {isRequired && (
             <span aria-hidden style={{ marginLeft: 'var(--space-1)', color: 'var(--color-error)' }}>
               *
             </span>
@@ -241,7 +240,7 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
         value={value}
         defaultValue={defaultValue}
         placeholder={placeholder}
-        required={required}
+        required={isRequired}
         disabled={disabled}
         readOnly={readOnly}
         min={min}
@@ -250,11 +249,11 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
         title={title}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
-        aria-describedby={ariaDescribedby}
+        aria-describedby={errorMessage ? `${id || 'numberfield'}-error` : ariaDescribedby}
         aria-disabled={ariaDisabled}
         aria-live={ariaLive}
-        aria-invalid={ariaInvalid || error}
-        aria-required={ariaRequired}
+        aria-invalid={hasError}
+        aria-required={ariaRequired || isRequired}
         autoFocus={autoFocus}
         autoComplete={autoComplete}
         onChange={onChange}
@@ -265,6 +264,11 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props, ref) 
         style={inputStyle}
         className={className}
       />
+      {errorMessage && (
+        <span id={`${id || 'numberfield'}-error`} role="alert" style={{ display: 'block', marginTop: 'var(--space-1)', fontSize: 'var(--font-size-sm)', color: 'var(--color-error)' }}>
+          {errorMessage}
+        </span>
+      )}
     </div>
   );
 });

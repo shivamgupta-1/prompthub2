@@ -49,7 +49,7 @@
   --bg-page: var(--color-gray-50);
   --bg-surface: var(--color-white);
   --bg-muted: var(--color-gray-100);
-  --bg-hover: var(--color-gray-100);
+  /* --bg-hover: var(--color-gray-100); */
   --bg-selected: var(--color-gray-200);
 
   /* -------------------------------
@@ -173,4 +173,36 @@
      AutoComplete
   -------------------------------- */
   --autocomplete-max-height: 300px;
+}
+
+/* Dark theme overrides - apply by adding `theme-dark` class to <html> or <body> */
+.theme-dark {
+   --text-primary: #e6eef8;
+   --text-secondary: #9fb6ce;
+   --text-muted: #7f93a3;
+   --text-inverse: var(--color-black);
+
+   --bg-page: #0b1220;      /* deep page background */
+   --bg-surface: #0f1724;   /* cards, panels */
+   --bg-muted: #0b1420;     /* subtle surfaces */
+   --bg-hover: #111828;     /* hover states */
+   --bg-selected: #102235;  /* selected row */
+
+   --border-color: #172033; /* subtle dark border */
+   --border-color-hover: #22303b;
+   --border-color-focus: #2563eb; /* blue focus */
+
+   --color-primary: #60a5fa;       /* calm blue accent */
+   --color-primary-hover: #3b82f6;
+   --color-primary-active: #2563eb;
+
+   --shadow-sm: 0 1px 3px rgba(2,6,23,0.6);
+   --shadow-md: 0 6px 12px rgba(2,6,23,0.7);
+
+   --overlay-backdrop: rgba(2,6,23,0.6);
+}
+
+/* Light theme class (optional explicit class) */
+.theme-light {
+   /* no-op; defaults from :root are used */
 }

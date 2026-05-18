@@ -1,1 +1,3 @@
-export { default } from './Modal';
+export { default as Modal } from './Modal';
+export { default as CustomModal } from './CustomModal';
+export { default as DeleteModal } from './DeleteModal';
